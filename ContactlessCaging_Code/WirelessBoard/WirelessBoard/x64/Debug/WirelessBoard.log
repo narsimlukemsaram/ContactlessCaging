@@ -1,0 +1,4 @@
+﻿  AcoustoBots_GSPAT_FocalPoint_Hinge_Bead_Cooperative.cpp
+C:\UCL\SSM\ContactlessTransport\ContactlessTransport_ServerPC_Cooperative\WirelessBoard\WirelessBoard\AcoustoBots_GSPAT_FocalPoint_Hinge_Bead_Cooperative.cpp(25,17): warning C4326: return type of 'main' should be 'int' instead of 'void'
+C:\UCL\SSM\ContactlessTransport\ContactlessTransport_ServerPC_Cooperative\WirelessBoard\WirelessBoard\AcoustoBots_GSPAT_FocalPoint_Hinge_Bead_Cooperative.cpp(132,16): warning C4305: 'initializing': truncation from 'double' to 'float'
+  WirelessBoard.vcxproj -> C:\UCL\SSM\ContactlessTransport\ContactlessTransport_ServerPC_Cooperative\WirelessBoard\x64\Debug\WirelessBoard.exe
