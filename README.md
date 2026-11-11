@@ -209,10 +209,10 @@ For a manuscript release, tag the selected GitHub commit and create a DOI-assign
 
 ## References and how to cite
 
-[1] **Kemsaram, N. and Subramanian, S.** (2026). *ContactlessCaging: Collective Contactless Transport via Distributed Acoustic Caging in a Physical Robot Swarm*. Manuscript in review.
+[1] N. Kemsaram and S. Subramanian, "ContactlessCaging: Collective Contactless Transport via Distributed Acoustic Caging in a Physical Robot Swarm". 
 
-[2] **Kemsaram, N. et al.** (2025). AcoustoBots: A swarm of robots for acoustophoretic multimodal interactions. *Frontiers in Robotics and AI*, **12**, 1537101. https://doi.org/10.3389/frobt.2025.1537101
+[2] N. Kemsaram, A. Delibasi, J. Hardwick, B. Gautam, D. M. Plasencia and S. Subramanian, "AcoustoBots: A swarm of robots for acoustophoretic multimodal interactions," Frontiers in Robotics and AI, 12, 1537101. https://doi.org/10.3389/frobt.2025.1537101.
 
-[3] **Kemsaram, N. et al.** (2025). A Cooperative Contactless Object Transport with Acoustic Robots. *2025 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)*, 18043–18050. https://doi.org/10.1109/IROS60139.2025.11245907
+[3] N. Kemsaram, A. Delibasi, J. Hardwick, B. Gautam, D. M. Plasencia and S. Subramanian, "A Cooperative Contactless Object Transport with Acoustic Robots," 2025 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), Hangzhou, China, 2025, pp. 18043-18050, doi: 10.1109/IROS60139.2025.11245907. 
 
-[4] **Martinez Plasencia, D., Hirayama, R., Montano-Murillo, R. and Subramanian, S.** (2020). GS-PAT: High-speed multi-point sound-fields for phased arrays of transducers. *ACM Transactions on Graphics*, **39**(4), Article 138.
+[4] D. M. Plasencia, Hirayama, R., Montano-Murillo, R. and S. Subramanian, "GS-PAT: High-speed multi-point sound-fields for phased arrays of transducers," ACM Transactions on Graphics, 39(4), Article 138.
