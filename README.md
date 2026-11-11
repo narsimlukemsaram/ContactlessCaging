@@ -1,9 +1,8 @@
-# ContactlessCaging
-### Collective Contactless Transport via Distributed Acoustic Caging in a Physical Robot Swarm
+# ContactlessCaging: Collective Contactless Transport via Distributed Acoustic Caging in a Physical Robot Swarm
 
 ![System overview](ContactlessCaging_Images/BlockDiagram.png)
 
-**Research code, documentation, and integration tools for ContactlessCaging, a four-robot acoustic transport project.** ContactlessCaging uses four mobile ultrasonic phased-array robots to generate and transport a shared acoustic trapping region without contact with the payload [1]. The present study extends the *AcoustoBots* platform [2] and the two-robot IROS 2025 transport study [3].
+**Research code, documentation, and integration tools for ContactlessCaging, a four-robot acoustic transport project.** ContactlessCaging uses four mobile ultrasonic phased-array robots to generate and transport a shared acoustic trapping region without contact with the payload [1]. The present study extends the AcoustoBots platform [2] and the two-robot IROS 2025 transport study [3].
 
 ## 1. Overview
 
@@ -13,26 +12,7 @@ The experimental ContactlessCaging platform consists of four TurtleBot3 Burger r
 - **Robot coordination:** ROS 2 Humble, independent local PID controllers, a designated leader and three followers.
 - **Pose sensing:** external PhaseSpace tracking of PAT-board positions.
 - **Timing:** a 40 kHz reference distributed from leader to followers via FPGA–IR electronics.
-- **Evaluation:** microphone pressure-amplitude profiles, PhaseSpace-based trajectories, full-path transport trials and synchronisation measurements.
-
-The control architecture is **distributed at robot level but uses global external pose sensing and a leader reference**; it does not represent a leader-independent, fully onboard autonomous swarm.
-
-### Experimental results documented in the research manuscript
-
-| Metric | Reported value |
-| --- | --- |
-| Mobile robots | 4 × TurtleBot3 Burger |
-| Phased arrays | 4 × (8 × 8), 256 transducer elements |
-| Acoustic carrier | 40 kHz |
-| Payload | 2 mm-diameter EPS particle |
-| Commanded path / nominal speed | 100 cm straight line / approximately 5 cm/s |
-| Successful four-robot trials | 12 of 15 (80%) |
-| Successful single-robot reference trials | 14 of 15 (approximately 93%) |
-| Four-array measured peak pressure amplitude | Approximately 8026.4 Pa |
-| Four-robot formation-centre lateral RMSE | 1.386 cm (11 sampled trajectory positions) |
-| Maximum observed inter-robot timing offset | Approximately 1.9 µs |
-
-The nominal 20 s traversal duration is calculated from commanded distance and speed rather than measured trial timestamps. The tracked PAT-board reference trajectories are different from the trajectory of the suspended particle.
+- **Evaluation:** microphone measurements, PhaseSpace-based trajectories, full-path transport trials and synchronisation measurements.
 
 ## 2. Repository contents
 
@@ -72,8 +52,6 @@ ContactlessCaging/
 └── README.md
 ```
 
-The existing acoustic C++ source is retained, including historical AcoustoBots programmes, while temporary IDE and build outputs are removed from the active tree. The included Python ROS 2 package supplies additional formation-control interfaces and a parser for the tracking UDP packet used in the earlier C++ source. The actual low-level FPGA–IR signal generation remains a separate hardware/firmware subsystem.
-
 ## 3. Hardware requirements
 
 | Hardware | Role |
@@ -84,7 +62,7 @@ The existing acoustic C++ source is retained, including historical AcoustoBots p
 | Altera Cyclone IV FPGA and IR TX/RX | Phase-timing reference distribution |
 | PhaseSpace tracking system | Global PAT-board pose feedback |
 | Laboratory control computer with OpenCL-compatible GPU | Windows C++ GS-PAT acoustic software |
-| Brüel & Kjær microphone and XYZ positioning stage | Pressure profiles |
+| Brüel & Kjær microphone and XYZ positioning stage | Pressure measurements |
 | Oscilloscope | Inter-robot timing measurements |
 | 2 mm EPS sphere | Contactless-transport specimen |
 
@@ -108,7 +86,7 @@ Existing Visual Studio project properties refer to laboratory-specific paths. Ch
 - PhaseSpace pose stream: `geometry_msgs/PoseStamped` in metres and a common `world` frame, or the supplied bridge for the historical tracker UDP packet format.
 - TurtleBot3 ROS 2 bring-up and accessible `/<robot>/cmd_vel` control topics.
 
-The supplied ROS 2 controller gains and relative positions are starting configuration examples; replace them with laboratory-calibrated values before commanding motion.
+The supplied ROS 2 controller gains and relative positions are starting configuration examples and replace them with laboratory-calibrated values before commanding motion.
 
 ## 5. Build the acoustic software (Windows)
 
@@ -119,7 +97,7 @@ The supplied ROS 2 controller gains and relative positions are starting configur
 5. Configure the working directory so the `.pat` files and OpenCL kernel are found. Confirm the real IP addresses, IDs, calibration and inward-facing board transforms.
 6. Operate the acoustic programme only after checking the four individual phase packets with the FPGA/ESP32 hardware protocol.
 
-The four-array C++ application also contains a keyboard-operated focal-point demonstration (`W/A/S/D` and `Q/E`). Its legacy `F/B/L/R` network commands target an earlier robot interface; the TurtleBot3 motion workflow uses the ROS 2 controllers described below.
+The four-array C++ application also contains a keyboard-operated focal-point demonstration (`W/A/S/D` and `Q/E`). Its legacy `F/B/L/R` network commands target an earlier robot interface. The TurtleBot3 motion workflow uses the ROS 2 controllers described below.
 
 ## 6. Build the ROS 2 package (Ubuntu 22.04)
 
@@ -161,7 +139,7 @@ ros2 run contactlesscaging_control phasespace_udp_bridge --ros-args \
     -p udp_port:=7777 -p frame_id:=world -p position_scale:=1.0
 ```
 
-Adjust the position scale, heading units and tracker-name mapping using `config/formation.yaml`. Consult `docs/DEPLOYMENT_STEPS.md` for the complete execution sequence.
+Adjust the position scale, heading units, and tracker-name mapping using `config/formation.yaml`. Consult `docs/DEPLOYMENT_STEPS.md` for the complete execution sequence.
 
 ## 7. Contactless transport execution sequence
 
@@ -171,8 +149,8 @@ Adjust the position scale, heading units and tracker-name mapping using `config/
 4. Launch one formation-controller process per robot, using the measured global formation offsets. Controllers initialise in the **disabled** state.
 5. Inspect a zero-command condition and apply small safe commands to confirm motion direction and `cmd_vel` routing. Enable the individual controllers as appropriate.
 6. Start the leader's 100 cm commanded reference at approximately 5 cm/s using the `/formation/start` service.
-7. Configure the PAT phase generation, common FPGA–IR 40 kHz timing reference and acoustic target according to the experimental apparatus, then perform safe acoustic and transport tests.
-8. Record robot pose, odometry, acoustic commands, timing traces and trial outcomes; stop controllers and disable transducer power at the end of the run.
+7. Configure the PAT phase generation, common FPGA–IR 40 kHz timing reference, and acoustic target according to the experimental apparatus, then perform safe acoustic and transport tests.
+8. Record robot pose, odometry, acoustic commands, timing traces, and trial outcomes. Stop controllers and disable transducer power at the end of the run.
 
 Example motion enable/start commands:
 
@@ -186,33 +164,12 @@ ros2 service call /formation/start std_srvs/srv/Trigger '{}'
 
 Emergency software stop for each node: `ros2 param set /robotN/formation_controller enabled false`. Use the hardware emergency stop where required.
 
-## 8. Data analysis and figures
-
-- `analysis/transport_metrics.py` calculates mean lateral deviation, maximum lateral deviation and lateral RMSE from measured PAT-board positions (`x_cm,y_cm` CSV).
-- `analysis/pressure_profiles.py` plots measured one-dimensional microphone pressure profiles from CSV and identifies extrapolated samples separately.
-- In the research manuscript, the acoustic measurement procedure considered a nominal **60 × 60 mm** region, while Figure 7a contains available 1D profiles along the **0–40 mm** scan coordinate; the graph does not constitute a complete 2D map.
-- The four-robot trajectory is the geometric mean of PAT-board reference positions (from the PhaseSpace system), and must not be treated as direct EPS-particle position tracking.
-
-Input schemas and interpretation details are documented in `analysis/README.md` and `docs/ACQUISITION_AND_DATA.md`. Underlying experimental measurements should retain their original acquisition provenance and sample annotations.
-
-## 9. Limitations and scope
-
-The paper concerns a laboratory proof-of-concept with a single 2 mm EPS payload, fixed four-robot geometry and approximately 5 cm/s commanded transport along a straight 100 cm path. The reported acoustic pressure profiles do not determine three-dimensional radiation forces or trapping stiffness. Particle displacement relative to the acoustic trap centre was not recorded independently. Other payloads, turning paths and speed-dependent reliability remain subjects for further experiments.
-
-The repository preserves the existing Windows C++ acoustic code and supplies ROS 2 support code and analysis utilities. Hardware-specific FPGA/ESP32 firmware, PhaseSpace stream calibration, acoustic-to-robot streaming integration and original experiment logs should be maintained alongside the experimental apparatus and recorded configuration. Source changes require bench-level testing prior to physical transport runs.
-
-## 10. Code availability and release
-
-Original research sources: [github.com/narsimlukemsaram/ContactlessCaging](https://github.com/narsimlukemsaram/ContactlessCaging).
-
-For a manuscript release, tag the selected GitHub commit and create a DOI-assigning archive (e.g. Zenodo). Cite the resulting version DOI in the paper's Code Availability statement when assigned. The code and datasets should be archived with appropriate third-party attributions and permissions.
-
 ## References and how to cite
 
-[1] N. Kemsaram and S. Subramanian, "ContactlessCaging: Collective Contactless Transport via Distributed Acoustic Caging in a Physical Robot Swarm". 
+[1] Narsimlu Kemsaram, Sriram Subramanian. ContactlessCaging: Collective Contactless Transport via Distributed Acoustic Caging in a Physical Robot Swarm, 15 September 2026, PREPRINT (Version 1) available at Research Square [https://doi.org/10.21203/rs.3.rs-10786373/v1]
 
-[2] N. Kemsaram, A. Delibasi, J. Hardwick, B. Gautam, D. M. Plasencia and S. Subramanian, "AcoustoBots: A swarm of robots for acoustophoretic multimodal interactions," Frontiers in Robotics and AI, 12, 1537101. https://doi.org/10.3389/frobt.2025.1537101.
+[2] Narsimlu Kemsaram, James Hardwick, Jincheng Wang, Bonot Gautam, Ceylan Besevli, Giorgos Christopoulos, Sourabh Dogra, Lei Gao, Akin Delibasi, Diego Martinez Plasencia, Orestis Georgiou, Marianna Obrist, Ryuji Hirayama, Sriram Subramanian. AcoustoBots: A swarm of robots for acoustophoretic multimodal interactions, Frontiers in Robotics and AI, 12, 1537101 [https://doi.org/10.3389/frobt.2025.1537101]
 
-[3] N. Kemsaram, A. Delibasi, J. Hardwick, B. Gautam, D. M. Plasencia and S. Subramanian, "A Cooperative Contactless Object Transport with Acoustic Robots," 2025 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), Hangzhou, China, 2025, pp. 18043-18050, doi: 10.1109/IROS60139.2025.11245907. 
+[3] Narsimlu Kemsaram, Akin Delibasi, James Hardwick, Bonot Gautam, Diego Martinez Plasencia, Sriram Subramanian. A Cooperative Contactless Object Transport with Acoustic Robots, 2025 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), Hangzhou, China, 2025, pp. 18043-18050 [https://doi.org/10.1109/IROS60139.2025.11245907] 
 
-[4] D. M. Plasencia, Hirayama, R., Montano-Murillo, R. and S. Subramanian, "GS-PAT: High-speed multi-point sound-fields for phased arrays of transducers," ACM Transactions on Graphics, 39(4), Article 138.
+[4] Diego Martinez Plasencia, Ryuji Hirayama, Roberto Montano-Murillo, Sriram Subramanian. GS-PAT: High-speed multi-point sound-fields for phased arrays of transducers, ACM Transactions on Graphics, 39(4), Article 138 [https://doi.org/10.1145/3386569.3392492]
