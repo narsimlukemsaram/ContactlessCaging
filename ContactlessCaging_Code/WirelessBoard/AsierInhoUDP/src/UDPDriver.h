@@ -17,7 +17,7 @@ class UDPDriver {
 	char* serverIP;					//this is your servers IP address, aka this computers IP (wherever runtime is)
 	char broadCastIP[14];			//this IP address is used to broad cast data
 	int socketPort;					//this socket will be reserved for your communication, if you can't bind to it during runtime, then try a different socket
-	std::vector<char*> clientIPs;	//this is the IP address of your clinet. the last part should be 255 if using broadcast address 
+	std::vector<const char*> clientIPs;	//this is the IP address of your clinet. the last part should be 255 if using broadcast address
 	SOCKET serverSocket;
 	sockaddr_in serverAddr;
 
@@ -29,7 +29,7 @@ public:
 	UDPDriver();
 
 	void initialise(char* serverIP, int socketPort);
-	unsigned int addClient(char* clientIP);
+	unsigned int addClient(const char* clientIP);
 	void sendString(unsigned char* buffer, int numBytes, int clientID = -1); // clientID = -1 for broadcasting
 	void sendByte(unsigned char byte, int clientID = -1);
 	bool anyErrors();

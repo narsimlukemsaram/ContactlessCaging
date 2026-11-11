@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "Please cite the ContactlessCaging project and the related publications listed in README.md."
+title: "ContactlessCaging: Collective Contactless Transport via Distributed Acoustic Caging in a Physical Robot Swarm"
+type: software
+authors:
+  - family-names: Kemsaram
+    given-names: Narsimlu
+  - family-names: Subramanian
+    given-names: Sriram
+repository-code: https://github.com/narsimlukemsaram/ContactlessCaging
+keywords:
+  - swarm robotics
+  - acoustic levitation
+  - contactless transport
+  - ROS 2
+  - GS-PAT

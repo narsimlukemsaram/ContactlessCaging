@@ -1,3 +1,7 @@
+// Acoustic GS-PAT demonstration with keyboard-controlled focal point.
+// TurtleBot3 motion control and PhaseSpace ROS 2 topics are provided
+// in the companion ros2_ws/contactlesscaging_control package.
+// Check calibration, PAT hardware and per-board phase packets before use.
 // AcoustoBots_GSPAT_FourArray_Caging.cpp
 // Build the same way you build your 2-board program.
 // Keyboard: WASD (x/y), Q/E (z), F/B/L/R/H/D/b forward/back/left/right/hinge on/off/bead
@@ -24,7 +28,7 @@ void print(const char* s) { printf("%s\n", s); }
 int main() {
     // ---------- CONFIG ----------
     const int numPatBoards = 4;                  // Left, Right, Front, Back
-    const int numMonaRobots = 4;                  // one per board (edit if different)
+    const int numMonaRobots = 4;                  // legacy optional UDP-controlled robots; NOT TurtleBot3 ROS 2
     const float distance = 0.10f;              // separation between opposing boards (meters)
 
     // Board IDs in the order of the transforms below:
@@ -43,7 +47,7 @@ int main() {
         "192.168.0.124"    // Back
     }; // <<< EDIT to your four PAT boards
 
-    // Mona/robot IPs (optional – used for motion/hinge/bead commands)
+    // Mona/robot IPs (optional â€“ used for motion/hinge/bead commands)
     const char* Mona_addresses[numMonaRobots] = {
         "192.168.0.195",   // Robot 1 (Left)
         "192.168.0.191",   // Robot 2 (Right)
@@ -61,30 +65,30 @@ int main() {
     //
     // Rotations chosen so that local +Z points along the facing direction.
     // If your physical mounting differs, tweak the signs below (only the 3x3 part and translation).
-    float matBoardToWorld[16 * numPatBoards] = {
-        // LEFT  (face +X): map local +Z -> +X; set origin at (-d/2, 0, 0)
-        0, 0, 1, 0,   // x' = +Z
-        0, 1, 0, 0,   // y' = +Y
-        1, 0, 0, 0,   // z' = +X  (normal)
-        -distance * 0.5f, 0, 0, 1,
+        float matBoardToWorld[16 * numPatBoards] = {
+        // LEFT: local +Z -> world +X, board centre x = -distance/2
+         0,  0,  1, -distance * 0.5f,
+         0,  1,  0,  0,
+        -1,  0,  0,  0,
+         0,  0,  0,  1,
 
-        // RIGHT (face -X): map local +Z -> -X; origin at (+d/2, 0, 0)
-        0, 0,-1, 0,   // x' = -Z
-        0, 1, 0, 0,   // y' = +Y
-       -1, 0, 0, 0,   // z' = -X  (normal)
-         distance * 0.5f, 0, 0, 1,
+        // RIGHT: local +Z -> world -X, board centre x = +distance/2
+         0,  0, -1,  distance * 0.5f,
+         0,  1,  0,  0,
+         1,  0,  0,  0,
+         0,  0,  0,  1,
 
-         // FRONT (face -Y): map local +Z -> -Y; origin at (0, +d/2, 0)
-         1, 0, 0, 0,   // x' = +X
-         0, 0,-1, 0,   // y' = -Z
-         0,-1, 0, 0,   // z' = -Y  (normal)
-         0,  distance * 0.5f, 0, 1,
+        // FRONT: local +Z -> world -Y, board centre y = +distance/2
+         1,  0,  0,  0,
+         0,  0, -1,  distance * 0.5f,
+         0,  1,  0,  0,
+         0,  0,  0,  1,
 
-         // BACK  (face +Y): map local +Z -> +Y; origin at (0, -d/2, 0)
-         1, 0, 0, 0,   // x' = +X
-         0, 0, 1, 0,   // y' = +Z
-         0, 1, 0, 0,   // z' = +Y  (normal)
-         0, -distance * 0.5f, 0, 1
+        // BACK: local +Z -> world +Y, board centre y = -distance/2
+         1,  0,  0,  0,
+         0,  0,  1, -distance * 0.5f,
+         0, -1,  0,  0,
+         0,  0,  0,  1
     };
 
     // ---------- INIT ----------
@@ -151,7 +155,7 @@ int main() {
         GSPAT::Solution* solution = solver->createSolution(numPoints, numGeometries, true, curPos, amplitude, matrix, matrix);
         solver->compute(solution);
         solution->finalMessages(&msg);
-        for (int i = 0; i < numPatBoards; i++) udp.sendString(&msg[packetSize * 0], packetSize, PATs[i]);
+        for (int i = 0; i < numPatBoards; i++) udp.sendString(&msg[packetSize * i], packetSize, PATs[i]);
         solver->releaseSolution(solution);
         printf("Trap at (%0.4f,%0.4f,%0.4f)\n", curPos[0], curPos[1], curPos[2]);
     }
@@ -187,7 +191,7 @@ int main() {
             GSPAT::Solution* newSol = solver->createSolution(numPoints, numGeometries, true, curPos, amplitude, matrix, matrix);
             solver->compute(newSol);
             newSol->finalMessages(&msg);
-            for (int i = 0; i < numPatBoards; i++) udp.sendString(&msg[packetSize * 0], packetSize, PATs[i]);
+            for (int i = 0; i < numPatBoards; i++) udp.sendString(&msg[packetSize * i], packetSize, PATs[i]);
             solver->releaseSolution(newSol);
             printf("Trap at (%0.4f,%0.4f,%0.4f)\n", curPos[0], curPos[1], curPos[2]);
             commit = false;
