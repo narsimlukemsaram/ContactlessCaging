@@ -1,0 +1,31 @@
+# Site calibration: adapt names, world-frame offsets, PID gains and limits before enabling motion.
+# Offsets below are illustrative; measure physical positions so PATs face a common centre.
+# Parameters are loaded per controller in launch, not implicitly shared across robots.
+robots:
+  robot1: {role: leader,   offset_x: 0.0, offset_y: 0.0}
+  robot2: {role: follower, offset_x: 0.4, offset_y: 0.0}
+  robot3: {role: follower, offset_x: 0.2, offset_y: 0.2}
+  robot4: {role: follower, offset_x: 0.2, offset_y: -0.2}
+controller:
+  kp: 0.9
+  ki: 0.0
+  kd: 0.05
+  vmax: 0.05
+  omega_max: 0.6
+  heading_gain: 1.5
+  control_rate_hz: 20.0
+  pose_timeout_s: 0.5
+  frame_id: world
+  enabled: false
+bridge:
+  bind_host: 0.0.0.0
+  udp_port: 7777
+  position_scale: 1.0
+  heading_unit: radians
+  tracker_names: [AcoustoBot1, AcoustoBot2, AcoustoBot3, AcoustoBot4]
+  robot_names: [robot1, robot2, robot3, robot4]
+reference:
+  path_length_m: 1.0
+  commanded_speed_mps: 0.05
+  direction_x: 1.0
+  direction_y: 0.0

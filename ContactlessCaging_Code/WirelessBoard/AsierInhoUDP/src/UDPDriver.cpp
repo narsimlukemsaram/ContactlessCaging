@@ -15,7 +15,7 @@ void UDPDriver::initialise(char* serverIP, int socketPort) {
         status = READY;
 }
 
-unsigned int UDPDriver::addClient(char* clientIP) {
+unsigned int UDPDriver::addClient(const char* clientIP) {
     clientIPs.push_back(clientIP);
     return clientIPs.size() - 1;
 }
@@ -26,7 +26,7 @@ void UDPDriver::sendString(unsigned char* buffer, int numBytes, int clientID) {
         return; //Either the connection has not been initialized or the client IP address has not been set yet...
     }
 
-    char* clientIDsent;
+    const char* clientIDsent;
     if (clientID >= 0) // send to a specific client
         clientIDsent = clientIPs[clientID];
     else { // broad cast to all the possible clients

@@ -1,0 +1,32 @@
+# Visual Studio, IDE and transient build products
+.vs/
+**/.vs/
+**/x64/Debug/
+**/x64/Release/
+**/Win32/Debug/
+**/Win32/Release/
+**/ipch/
+*.obj
+*.pdb
+*.ipch
+*.ilk
+*.tlog
+*.suo
+*.wsuo
+*.VC.db
+*.VC.opendb
+*.vcxproj.user
+*.log
+
+# Python analysis/build caches
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# Local experiment logs and machine-specific configuration
+*.db3
+*.mcap
+*.bag
+rosbag2_*/
+.local/
+*.user
