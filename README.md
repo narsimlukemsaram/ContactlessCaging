@@ -1,7 +1,6 @@
 # ContactlessCaging: Collective Contactless Transport via Distributed Acoustic Caging in a Physical Robot Swarm
 
 ![System overview](ContactlessCaging_Images/BlockDiagram.png)
-
 Figure. Bio-inspired acoustic caging for collective contactless transport. a, A biological inspiration from cooperative ant transport, where multiple ants surround and stabilise a food item while moving toward a nest. b, An acoustic analogue of caging, in which four mobile robots equipped with ultrasonic phased arrays generate a shared acoustic cage around a target object and stabilise it while moving toward a destination. Arrows indicate the transport direction.
 
 ## 1. Overview
