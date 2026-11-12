@@ -2,11 +2,17 @@
 
 ![System overview](ContactlessCaging_Images/BlockDiagram.png)
 
-**Research code, documentation, and integration tools for ContactlessCaging, a four-robot acoustic transport project.** ContactlessCaging uses four mobile ultrasonic phased-array robots to generate and transport a shared acoustic trapping region without contact with the payload [1]. The present study extends the AcoustoBots platform [2] and the two-robot IROS 2025 transport study [3].
+**Research code, documentation, and integration tools for ContactlessCaging, a four-robot acoustic transport project.** ContactlessCaging uses four mobile ultrasonic phased-array robots to generate and transport a shared acoustic trapping region without contact with the payload. The present study extends the AcoustoBots platform [2] and the two-robot IROS 2025 transport study [3].
 
 ## 1. Overview
 
-The experimental ContactlessCaging platform consists of four TurtleBot3 Burger robots. Each robot carries an 8 × 8 ultrasonic phased array (PAT) with 64 transducers operating at 40 kHz. The boards face a common trapping region, giving 256 elements in the four-array configuration. The architecture combines:
+In ant colonies, groups can surround, stabilise, and transport objects through distributed local interactions, achieving collective performance that exceeds the capability of a single individual. These behaviours have long inspired swarm robotics, particularly in the design of decentralized coordination strategies for transport, assembly, and manipulation.
+
+Ultrasonic phased arrays can generate spatially structured pressure fields that trap and move particles in air without mechanical grasping [1]. Prior work has demonstrated acoustic levitation, dynamic focal control, and contactless transport using static [2] or centrally controlled phased-array systems [3]. However, these systems are typically fixed in space and do not exploit the mobility, reconfigurability, or distributed decision-making that characterize robot swarms [4].
+
+We introduce _ContactlessCaging_ [5], a bio-inspired approach to cooperative contactless transport in which four mobile robots, each equipped with an 8 × 8 ultrasonic phased array, surround a lightweight object and jointly generate a shared acoustic trapping region. Inspired by cooperative caging behaviour in ant colonies, each robot contributes to the acoustic field without physically contacting the object. The above Figure illustrates this biological analogy and the proposed four-robot acoustic caging configuration.
+
+The ContactlessCaging platform consists of four TurtleBot3 Burger robots. Each robot carries an 8 × 8 ultrasonic phased array (PAT) with 64 transducers operating at 40 kHz. The boards face a common trapping region, giving 256 elements in the four-array configuration. The architecture combines:
 
 - **Acoustic actuation:** element-wise joint GS-PAT phase control with calibrated board geometry.
 - **Robot coordination:** ROS 2 Humble, independent local PID controllers, a designated leader and three followers.
@@ -166,10 +172,12 @@ Emergency software stop for each node: `ros2 param set /robotN/formation_control
 
 ## References and how to cite
 
-[1] Narsimlu Kemsaram, Sriram Subramanian. ContactlessCaging: Collective Contactless Transport via Distributed Acoustic Caging in a Physical Robot Swarm, 15 September 2026, PREPRINT (Version 1) available at Research Square [https://doi.org/10.21203/rs.3.rs-10786373/v1]
+[1] Ceylan Beşevli, Lei Gao, Narsimlu Kemsaram, Giada Brianza, Orestis Georgiou, Sriram Subramanian, Marianna Obrist. SONARIOS: A Design Futuring-Driven Exploration of Acoustophoresis, 2025 ACM Designing Interactive Systems Conference (DIS 2025), Madeira, Portugal, 2025, pp. 740-753 [https://doi.org/10.1145/3715336.3735775] 
 
-[2] Narsimlu Kemsaram, James Hardwick, Jincheng Wang, Bonot Gautam, Ceylan Besevli, Giorgos Christopoulos, Sourabh Dogra, Lei Gao, Akin Delibasi, Diego Martinez Plasencia, Orestis Georgiou, Marianna Obrist, Ryuji Hirayama, Sriram Subramanian. AcoustoBots: A swarm of robots for acoustophoretic multimodal interactions, Frontiers in Robotics and AI, 12, 1537101 [https://doi.org/10.3389/frobt.2025.1537101]
+[2] Diego Martinez Plasencia, Ryuji Hirayama, Roberto Montano-Murillo, Sriram Subramanian. GS-PAT: High-speed multi-point sound-fields for phased arrays of transducers, ACM Transactions on Graphics, 39(4), Article 138 [https://doi.org/10.1145/3386569.3392492]
 
-[3] Narsimlu Kemsaram, Akin Delibasi, James Hardwick, Bonot Gautam, Diego Martinez Plasencia, Sriram Subramanian. A Cooperative Contactless Object Transport with Acoustic Robots, 2025 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), Hangzhou, China, 2025, pp. 18043-18050 [https://doi.org/10.1109/IROS60139.2025.11245907] 
+[3] Narsimlu Kemsaram, James Hardwick, Jincheng Wang, Bonot Gautam, Ceylan Besevli, Giorgos Christopoulos, Sourabh Dogra, Lei Gao, Akin Delibasi, Diego Martinez Plasencia, Orestis Georgiou, Marianna Obrist, Ryuji Hirayama, Sriram Subramanian. AcoustoBots: A swarm of robots for acoustophoretic multimodal interactions, Frontiers in Robotics and AI, 12, 1537101 [https://doi.org/10.3389/frobt.2025.1537101]
 
-[4] Diego Martinez Plasencia, Ryuji Hirayama, Roberto Montano-Murillo, Sriram Subramanian. GS-PAT: High-speed multi-point sound-fields for phased arrays of transducers, ACM Transactions on Graphics, 39(4), Article 138 [https://doi.org/10.1145/3386569.3392492]
+[4] Narsimlu Kemsaram, Akin Delibasi, James Hardwick, Bonot Gautam, Diego Martinez Plasencia, Sriram Subramanian. A Cooperative Contactless Object Transport with Acoustic Robots, 2025 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), Hangzhou, China, 2025, pp. 18043-18050 [https://doi.org/10.1109/IROS60139.2025.11245907] 
+
+[5] Narsimlu Kemsaram, Sriram Subramanian. ContactlessCaging: Collective Contactless Transport via Distributed Acoustic Caging in a Physical Robot Swarm, 15 September 2026, PREPRINT (Version 1) available at Research Square [https://doi.org/10.21203/rs.3.rs-10786373/v1]
